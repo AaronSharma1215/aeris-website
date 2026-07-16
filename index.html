@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeris: Preventing Mold. Protecting Health.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-primary:#3C8651;
+    --green-deep:#1B6647;
+    --green-ink:#0E3A2A;
+    --green-lime:#96BA71;
+    --ink:#12241A;
+    --mist:#EEF3EA;
+    --paper:#FFFFFF;
+    --amber:#E8A33D;
+    --amber-deep:#B87A1F;
+    --line: rgba(18,36,26,0.12);
+    --font-display:'Archivo Black', 'Arial Black', sans-serif;
+    --font-body:'Work Sans', -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--mist);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(238,243,234,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1120px;margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.25rem;letter-spacing:0.01em;}
+  .brand svg{width:30px;height:30px;}
+  nav.links{display:flex;gap:18px;font-weight:600;font-size:0.86rem;}
+  nav.links a{text-decoration:none;color:var(--green-ink);position:relative;padding:4px 0;}
+  nav.links a:after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--amber);transition:width .25s ease;}
+  nav.links a:hover:after,nav.links a:focus-visible:after{width:100%;}
+  .nav-cta{
+    background:var(--green-primary);color:#fff;border:none;padding:10px 20px;
+    border-radius:999px;font-family:var(--font-body);font-weight:700;font-size:0.9rem;
+    cursor:pointer;text-decoration:none;white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--green-deep);}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--green-primary);
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    padding:96px 0 88px;
+  }
+  .hero .wrap{position:relative;z-index:2;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.8rem;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--green-lime);
+    display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);animation:pulse 1.8s infinite ease-in-out;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+  h1.headline{
+    font-family:var(--font-display);
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:0.98;
+    margin:0 0 26px;
+    letter-spacing:-0.01em;
+    max-width:14ch;
+  }
+  h1.headline .accent{color:var(--green-lime);}
+  .hero p.sub{
+    font-size:1.15rem;max-width:46ch;color:rgba(255,255,255,0.88);margin:0 0 36px;
+  }
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:64px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:14px 26px;border-radius:999px;font-weight:700;font-size:0.98rem;
+    text-decoration:none;cursor:pointer;border:2px solid transparent;transition:transform .15s ease, background .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--amber);color:#221200;}
+  .btn-primary:hover{background:#F3B457;}
+  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,0.5);}
+  .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,0.08);}
+
+  .hero-spores{position:absolute;inset:0;z-index:1;opacity:0.5;pointer-events:none;}
+
+  /* mini stat row in hero */
+  .hero-stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border-top:1px solid rgba(255,255,255,0.22);padding-top:28px;
+    max-width:640px;
+  }
+  .hero-stats div{padding-right:20px;}
+  .hero-stats .num{font-family:var(--font-mono);font-size:1.7rem;font-weight:600;color:var(--green-lime);}
+  .hero-stats .label{font-size:0.8rem;color:rgba(255,255,255,0.75);margin-top:2px;}
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:640px;margin-bottom:52px;}
+  .kicker{
+    font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--green-deep);margin-bottom:14px;display:block;
+  }
+  h2{
+    font-family:var(--font-display);font-size:clamp(1.8rem,3.4vw,2.6rem);
+    margin:0 0 16px;line-height:1.05;color:var(--green-ink);
+  }
+  .section-head p{font-size:1.05rem;color:rgba(18,36,26,0.72);max-width:52ch;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--mist);}
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:start;}
+  .about-grid p{font-size:1.02rem;color:rgba(18,36,26,0.78);margin-bottom:16px;}
+  .about-facts{display:grid;gap:16px;}
+  .fact-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 22px;}
+  .fact-item .fk{font-family:var(--font-mono);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-deep);margin-bottom:6px;}
+  .fact-item .fv{font-size:0.95rem;color:var(--ink);}
+
+  /* ---------- WHY ---------- */
+  .why{background:var(--paper);}
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .why-card{border-top:3px solid var(--amber);padding-top:18px;}
+  .why-card h3{font-size:1.05rem;margin:0 0 10px;}
+  .why-card p{font-size:0.94rem;color:rgba(18,36,26,0.7);margin:0;}
+
+  /* ---------- GOALS ---------- */
+  .goals{background:var(--green-ink);color:#fff;}
+  .goals .kicker{color:var(--green-lime);}
+  .goals h2{color:#fff;}
+  .goals .section-head p{color:rgba(255,255,255,0.72);}
+  .goals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .goal-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);border-radius:16px;padding:26px 24px;}
+  .goal-tag{display:inline-block;font-family:var(--font-mono);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);background:rgba(232,163,61,0.14);padding:5px 12px;border-radius:999px;margin-bottom:16px;}
+  .goal-card h3{color:#fff;font-size:1.05rem;margin:0 0 10px;}
+  .goal-card p{color:rgba(255,255,255,0.72);font-size:0.92rem;margin:0;}
+
+  /* ---------- PROBLEM ---------- */
+  .problem{background:var(--paper);}
+  .problem-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:start;}
+  .problem-copy p{font-size:1.02rem;color:rgba(18,36,26,0.8);margin-bottom:18px;}
+  .fact-list{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px;}
+  .fact-list li{
+    display:flex;gap:14px;align-items:flex-start;font-size:0.98rem;color:var(--ink);
+  }
+  .fact-list li .mark{
+    flex:none;width:22px;height:22px;border-radius:50%;background:var(--green-lime);
+    display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .fact-list li .mark svg{width:12px;height:12px;}
+  .problem-card{
+    background:var(--mist);border:1px solid var(--line);border-radius:18px;padding:32px;
+  }
+  .problem-card .big{font-family:var(--font-mono);font-size:3.2rem;color:var(--green-primary);font-weight:600;line-height:1;}
+  .problem-card .cap{font-size:0.9rem;color:rgba(18,36,26,0.65);margin-top:10px;}
+  .problem-card hr{border:none;border-top:1px solid var(--line);margin:26px 0;}
+
+  /* ---------- TIMELINE (signature element) ---------- */
+  .timeline-section{background:var(--green-ink);color:#fff;}
+  .timeline-section .kicker{color:var(--green-lime);}
+  .timeline-section .section-head p{color:rgba(255,255,255,0.72);}
+  .timeline-section h2{color:#fff;}
+  .timeline-wrap{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:20px;
+    padding:44px 40px 34px;
+  }
+  .timeline-track{position:relative;height:6px;background:rgba(255,255,255,0.14);border-radius:3px;margin:56px 0 18px;}
+  .timeline-fill{
+    position:absolute;left:0;top:0;height:100%;width:0%;
+    background:linear-gradient(90deg, var(--green-lime), var(--amber));
+    border-radius:3px;transition:width 2.4s cubic-bezier(.2,.7,.2,1);
+  }
+  .timeline-marks{position:relative;height:0;}
+  .tmark{
+    position:absolute;top:-50px;transform:translateX(-50%);text-align:center;width:150px;
+  }
+  .tmark .hr{font-family:var(--font-mono);font-size:0.82rem;color:var(--green-lime);margin-bottom:6px;}
+  .tmark .stem{width:2px;height:20px;background:rgba(255,255,255,0.3);margin:0 auto 8px;}
+  .tmark .txt{font-size:0.86rem;color:rgba(255,255,255,0.78);}
+  .tmark.tmark-kit .hr{color:var(--amber);font-weight:700;}
+  .tmark.tmark-kit .stem{background:var(--amber);width:3px;}
+  .tmark.tmark-kit .txt{color:#fff;font-weight:600;}
+  .spore-runner{
+    position:absolute;top:-14px;width:22px;height:22px;border-radius:50%;
+    background:var(--green-lime);transform:translateX(-50%);
+    box-shadow:0 0 0 6px rgba(150,186,113,0.18);transition:left 2.4s cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* ---------- SIMULATOR ---------- */
+  .simulator{background:var(--paper);}
+  .simulator .kicker{color:var(--green-deep);}
+  .sim-layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:32px;align-items:stretch;}
+  .sim-pad{
+    position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;cursor:crosshair;
+    background:linear-gradient(180deg, #EAF3E3 0%, #CFE3C3 100%);
+    border:1px solid var(--line);touch-action:none;
+  }
+  .sim-axis{position:absolute;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.72rem;color:rgba(18,36,26,0.55);}
+  .sim-axis-x{left:16px;right:16px;bottom:12px;}
+  .sim-axis-y{top:12px;left:16px;bottom:12px;flex-direction:column;writing-mode:vertical-rl;}
+  .sim-spores{position:absolute;inset:0;width:100%;height:100%;}
+  .sim-cursor{
+    position:absolute;width:16px;height:16px;border-radius:50%;
+    border:2px solid var(--green-deep);background:rgba(255,255,255,0.5);
+    transform:translate(-50%,-50%);pointer-events:none;left:0%;top:100%;
+    transition:left .08s linear, top .08s linear;
+  }
+  .sim-readout{display:flex;flex-direction:column;justify-content:center;gap:18px;padding:8px 4px;}
+  .ro-row{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px;}
+  .ro-label{font-size:0.88rem;color:rgba(18,36,26,0.62);}
+  .ro-val{font-family:var(--font-mono);font-size:1.3rem;font-weight:600;color:var(--green-ink);}
+  .ro-gauge{margin-top:6px;}
+  .gauge-track{height:12px;border-radius:6px;background:linear-gradient(90deg,#96BA71 0%,#E8A33D 55%,#D9552B 78%,#A5271A 100%);position:relative;}
+  .gauge-fill{position:absolute;top:-6px;width:3px;height:24px;background:var(--ink);border-radius:2px;left:0%;transform:translateX(-50%);transition:left .12s linear;}
+  .gauge-zones{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.68rem;color:rgba(18,36,26,0.5);margin-top:8px;}
+  .ro-risk{font-family:var(--font-display);font-size:1.15rem;color:var(--green-ink);}
+  .sim-note{font-size:0.8rem;color:rgba(18,36,26,0.5);margin:0;}
+
+  /* ---------- KIT ---------- */
+  .kit{background:var(--mist);}
+  .kit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .kit-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:26px 22px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .kit-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(18,36,26,0.08);}
+  .kit-card .ic{width:38px;height:38px;margin-bottom:16px;color:var(--green-primary);}
+  .kit-card h3{font-family:var(--font-body);font-weight:700;font-size:1.02rem;margin:0 0 8px;}
+  .kit-card p{font-size:0.9rem;color:rgba(18,36,26,0.68);margin:0;}
+
+  /* ---------- HOW IT WORKS (real sequence -> numbered ok) ---------- */
+  .how{background:var(--paper);}
+  .how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;}
+  .how-steps:before{
+    content:"";position:absolute;top:26px;left:8%;right:8%;height:2px;
+    background:repeating-linear-gradient(90deg, var(--line) 0 8px, transparent 8px 16px);
+    z-index:0;
+  }
+  .how-step{position:relative;z-index:1;padding:0 20px;}
+  .how-step .n{
+    font-family:var(--font-mono);width:52px;height:52px;border-radius:50%;
+    background:var(--green-primary);color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;font-weight:600;margin-bottom:22px;
+  }
+  .how-step h3{font-size:1.08rem;margin:0 0 10px;font-family:var(--font-body);font-weight:700;}
+  .how-step p{font-size:0.92rem;color:rgba(18,36,26,0.68);}
+
+  /* ---------- IMPACT ---------- */
+  .impact{background:var(--mist);}
+  .impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .impact-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:26px 22px;}
+  .impact-icon{
+    width:34px;height:34px;border-radius:50%;background:var(--green-lime);color:var(--green-ink);
+    display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:16px;font-family:var(--font-mono);
+  }
+  .impact-card h3{font-size:1.0rem;margin:0 0 8px;}
+  .impact-card p{font-size:0.88rem;color:rgba(18,36,26,0.68);margin:0;}
+  .impact-next{border:1px dashed var(--amber-deep);background:rgba(232,163,61,0.08);}
+  .impact-next .impact-icon{background:var(--amber);color:#221200;}
+
+  /* ---------- TEAM ---------- */
+  .team{background:var(--mist);}
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .team-card{
+    background:var(--paper);border-radius:18px;padding:30px 26px;border:1px solid var(--line);
+  }
+  .avatar{
+    width:56px;height:56px;border-radius:50%;background:var(--green-lime);
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-display);
+    color:var(--green-ink);font-size:1.1rem;margin-bottom:18px;
+  }
+  .team-card h3{margin:0 0 4px;font-size:1.05rem;}
+  .team-card .role{font-family:var(--font-mono);font-size:0.78rem;color:var(--green-deep);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;}
+  .team-card p{font-size:0.92rem;color:rgba(18,36,26,0.68);margin:0 0 16px;}
+  .team-tags{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+  .team-tags li{
+    font-family:var(--font-mono);font-size:0.78rem;color:var(--green-deep);
+    padding-left:16px;position:relative;
+  }
+  .team-tags li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--green-lime);}
+
+  /* ---------- PARTNERS ---------- */
+  .partners{background:var(--paper);}
+  .partner-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px;}
+  .partner-chip{
+    font-family:var(--font-mono);font-size:0.86rem;padding:10px 18px;border-radius:999px;
+    border:1px solid var(--line);color:var(--green-ink);background:var(--mist);
+  }
+
+  /* ---------- CTA / FOOTER ---------- */
+  .cta{
+    background:var(--green-primary);color:#fff;text-align:center;padding:96px 0;
+    position:relative;overflow:hidden;
+  }
+  .cta h2{color:#fff;margin:0 auto 18px;max-width:18ch;}
+  .cta p{max-width:44ch;margin:0 auto 36px;color:rgba(255,255,255,0.85);}
+  .cta .hero-actions{justify-content:center;margin-bottom:0;}
+
+  footer{background:var(--green-ink);color:rgba(255,255,255,0.7);padding:48px 0 30px;font-size:0.86rem;}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:28px;margin-bottom:20px;}
+  .foot-brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);color:#fff;font-size:1.05rem;}
+  .foot-links{display:flex;gap:24px;}
+  .foot-links a{text-decoration:none;color:rgba(255,255,255,0.72);}
+  .foot-links a:hover{color:#fff;}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .timeline-fill,.spore-runner{transition:none;}
+  }
+
+  @media (max-width:860px){
+    nav.links{display:none;}
+    .hamburger{display:block;}
+    .problem-grid,.kit-grid,.how-steps,.team-grid,.about-grid,.why-grid,.goals-grid,.impact-grid,.sim-layout{grid-template-columns:1fr;}
+    .how-steps:before{display:none;}
+    .kit-grid{grid-template-columns:repeat(2,1fr);}
+    .hero-stats{grid-template-columns:1fr;gap:14px;}
+  }
+  @media (max-width:480px){
+    .kit-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" fill="#96BA71" stroke="#1B6647" stroke-width="2"/><circle cx="14" cy="16" r="4" fill="#3C8651"/><circle cx="24" cy="14" r="3" fill="#3C8651"/><circle cx="26" cy="24" r="4.5" fill="#3C8651"/><circle cx="15" cy="26" r="3" fill="#3C8651"/></svg>
+      AERIS
+    </div>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#why">Why</a>
+      <a href="#goals">Goals</a>
+      <a href="#problem">Problem</a>
+      <a href="#try-it">Try it</a>
+      <a href="#impact">Impact</a>
+      <a href="#team">Team</a>
+    </nav>
+    <a class="nav-cta" href="#get-involved">Request a kit</a>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <svg class="hero-spores" width="100%" height="100%" viewBox="0 0 1120 500" preserveAspectRatio="xMidYMid slice">
+    <circle cx="950" cy="80" r="60" fill="#2F7546"/>
+    <circle cx="1040" cy="140" r="26" fill="#2F7546"/>
+    <circle cx="880" cy="180" r="18" fill="#2F7546"/>
+    <circle cx="1000" cy="260" r="40" fill="#2F7546"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Philadelphia · Student-led public health initiative</div>
+    <h1 class="headline">Mold takes root in <span class="accent">48 hours.</span> We move faster.</h1>
+    <p class="sub">Aeris builds and delivers low-cost mold-prevention kits to renters, closing the short biological window between a water leak and a mold problem that won't go away.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#get-involved">Request a kit</a>
+      <a class="btn btn-ghost" href="#partners">Partner with us</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="num">48 hrs</div><div class="label">window before mold establishes</div></div>
+      <div><div class="num">3</div><div class="label">student co-leads, one shared mission</div></div>
+      <div><div class="num">$0</div><div class="label">cost to the renters we serve</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal">
+        <span class="kicker">About Aeris</span>
+        <h2>Three students. One research paper that turned into a project.</h2>
+        <p>Aeris started as an independent research paper for the High School Health Research Challenge, looking at the link between Philadelphia's climate and respiratory health. Rather than let the findings sit in a report, its three co-leads, Aaron Sharma, Tejashwin Kodipaka, and Advaith Chungapalli, all students at Downingtown STEM Academy, built something renters could actually use.</p>
+        <p>Aeris now runs as a small, student-operated team: research, kit design, and outreach to public health partners across Philadelphia, all handled in-house. <a href="#team" style="color:var(--green-deep);font-weight:600;">Meet the team &rarr;</a></p>
+      </div>
+      <div class="about-facts reveal">
+        <div class="fact-item"><div class="fk">Origin</div><div class="fv">A High School Health Research Challenge paper on housing and health equity</div></div>
+        <div class="fact-item"><div class="fk">Based in</div><div class="fv">The Philadelphia area</div></div>
+        <div class="fact-item"><div class="fk">Run by</div><div class="fv">Aaron Sharma, Tejashwin Kodipaka, and Advaith Chungapalli, no outside staff</div></div>
+        <div class="fact-item"><div class="fk">Focus</div><div class="fv">Renters left waiting between a leak and a repair</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Why this, why now</span>
+      <h2>The harm happens in the gap, not the leak.</h2>
+      <p>A leak is inevitable in any building eventually. What decides whether it becomes a health problem is what happens in the days right after, and that's exactly where low-income renters get stuck.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <h3>Repairs are slow</h3>
+        <p>Getting a landlord to respond, schedule, and complete a repair can take far longer than mold needs to take hold.</p>
+      </div>
+      <div class="why-card reveal">
+        <h3>The research pointed here</h3>
+        <p>The team's original research kept surfacing the same story: it's not that renters don't know about mold, it's that no one gets them anything to act on in time.</p>
+      </div>
+      <div class="why-card reveal">
+        <h3>Prevention is cheap; remediation isn't</h3>
+        <p>A kit costs a fraction of professional mold remediation, and can be used the same day a leak is discovered.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="goals" id="goals">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Our goals</span>
+      <h2>What Aeris is building toward.</h2>
+      <p>Three goals, in order of what needs to happen first.</p>
+    </div>
+    <div class="goals-grid">
+      <div class="goal-card reveal">
+        <div class="goal-tag">Near term</div>
+        <h3>Get kits to renters fast</h3>
+        <p>Build simple intake and delivery through partner clinics and community organizations, so a request turns into a kit within a day.</p>
+      </div>
+      <div class="goal-card reveal">
+        <div class="goal-tag">Ongoing</div>
+        <h3>Ground the kit in evidence</h3>
+        <p>Keep refining kit contents and guidance with input from public health researchers, not just what's convenient to source.</p>
+      </div>
+      <div class="goal-card reveal">
+        <div class="goal-tag">Long term</div>
+        <h3>Make the case for renter protections</h3>
+        <p>Turn what Aeris learns from real deliveries into evidence that supports faster landlord response times and stronger renter protections.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="problem" id="problem">
+  <div class="wrap">
+    <div class="problem-grid">
+      <div class="problem-copy reveal">
+        <span class="kicker">The problem</span>
+        <h2>A leak shouldn't turn into a health hazard.</h2>
+        <p>When a pipe leaks or a roof lets water in, mold doesn't wait. Once drywall, insulation, or carpet stays damp, spores that are already in the air find exactly what they need to grow.</p>
+        <p>For homeowners, that's an inconvenience solved with a fan and a dehumidifier. For renters, especially renters waiting on a landlord to respond, it's often a health risk that sits there for weeks.</p>
+        <ul class="fact-list">
+          <li><span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0E3A2A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>It rains roughly 32% of the year in Philadelphia, about a third of the year, and that rain paired with the city's humidity creates an ideal setup for mold.</li>
+          <li><span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0E3A2A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Childhood asthma affects about 21% of kids in Philadelphia, compared with a national average of about 13%.</li>
+          <li><span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0E3A2A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Repairs take time: permission, contractors, materials. Mold doesn't wait for any of it.</li>
+        </ul>
+      </div>
+      <div class="problem-card reveal">
+        <div class="big">24–48h</div>
+        <div class="cap">is roughly how long it takes mold to begin colonizing a damp surface after water exposure.</div>
+        <hr>
+        <div class="big">1 kit</div>
+        <div class="cap">is designed to cover that window for a single affected room, no contractor required.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="timeline-section" id="window">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">The 48-hour window</span>
+      <h2>Every kit is a race against a clock.</h2>
+      <p>This is the window Aeris is built around: the short stretch between water exposure and mold colonization. Get moisture control in early, and the outcome changes completely.</p>
+    </div>
+    <div class="timeline-wrap reveal">
+      <div class="timeline-track">
+        <div class="timeline-fill" id="tfill"></div>
+        <div class="spore-runner" id="trunner"></div>
+      </div>
+      <div class="timeline-marks">
+        <div class="tmark" style="left:0%"><div class="hr">0h</div><div class="stem"></div><div class="txt">Water exposure begins</div></div>
+        <div class="tmark tmark-kit" style="left:35%"><div class="hr">~16h</div><div class="stem"></div><div class="txt">Aeris kit deployed</div></div>
+        <div class="tmark" style="left:100%"><div class="hr">48h</div><div class="stem"></div><div class="txt">Mold colonization risk sets in</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="simulator" id="try-it">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">See it happen</span>
+      <h2>Move your cursor. Watch the risk climb.</h2>
+      <p>Left-to-right is time since a leak starts. Top-to-bottom is how humid the room stays. Move around the panel and watch mold growth, and asthma-trigger risk, respond.</p>
+    </div>
+    <div class="sim-layout reveal">
+      <div class="sim-pad" id="simPad">
+        <div class="sim-axis sim-axis-x"><span>0h</span><span>72h since leak</span></div>
+        <div class="sim-axis sim-axis-y"><span>Humid</span><span>Dry</span></div>
+        <svg class="sim-spores" id="simSpores" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+        <div class="sim-cursor" id="simCursor"></div>
+      </div>
+      <div class="sim-readout">
+        <div class="ro-row">
+          <div class="ro-label">Hours since leak</div>
+          <div class="ro-val" id="roHours">0h</div>
+        </div>
+        <div class="ro-row">
+          <div class="ro-label">Relative humidity</div>
+          <div class="ro-val" id="roHumidity">40%</div>
+        </div>
+        <div class="ro-gauge">
+          <div class="gauge-track">
+            <div class="gauge-fill" id="gaugeFill"></div>
+          </div>
+          <div class="gauge-zones"><span>Low</span><span>Moderate</span><span>High</span><span>Severe</span></div>
+        </div>
+        <div class="ro-risk" id="roRisk">Asthma-trigger risk: Low</div>
+        <p class="sim-note">Illustrative model based on how mold colonization and moisture generally interact, not a reading from your actual home.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="kit" id="kit">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">The kit</span>
+      <h2>Everything a room needs to stay dry.</h2>
+      <p>Compact, easy to use without any training, and priced so cost is never the reason a leak goes untreated.</p>
+    </div>
+    <div class="kit-grid">
+      <div class="kit-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 3s6 6.5 6 10.5a6 6 0 1 1-12 0C6 9.5 12 3 12 3z" stroke="currentColor" stroke-width="1.8"/></svg>
+        <h3>Moisture meter</h3>
+        <p>Reads how wet a surface really is, so you know if it's still a problem.</p>
+      </div>
+      <div class="kit-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.8"/></svg>
+        <h3>Rapid-dry desiccant packs</h3>
+        <p>Pull moisture out of drywall, carpet, and insulation while air dries the room.</p>
+      </div>
+      <div class="kit-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M4 20h16M7 20V10l5-6 5 6v10" stroke="currentColor" stroke-width="1.8"/></svg>
+        <h3>Antimicrobial spray</h3>
+        <p>EPA-registered, renter-safe treatment for the exposed surface.</p>
+      </div>
+      <div class="kit-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <h3>Plain-language guide</h3>
+        <p>Step-by-step instructions and a note for your landlord about what happened and when.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">How it reaches you</span>
+      <h2>Three steps, no red tape.</h2>
+      <p>We designed the process to move as fast as the mold does.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="n">1</div>
+        <h3>Tell us about the leak</h3>
+        <p>A short form: where the water came from, and what's affected.</p>
+      </div>
+      <div class="how-step reveal">
+        <div class="n">2</div>
+        <h3>We get a kit to you</h3>
+        <p>Through a partner clinic, community org, or direct drop-off, usually within a day.</p>
+      </div>
+      <div class="how-step reveal">
+        <div class="n">3</div>
+        <h3>You treat the space</h3>
+        <p>Follow the guide. No contractor or landlord approval needed to start.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact" id="impact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Where we are now</span>
+      <h2>Early, but moving with real partners.</h2>
+      <p>Aeris is a young project. Here's what's actually happened so far, and what it's building toward next.</p>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card reveal">
+        <div class="impact-icon">✓</div>
+        <h3>Research foundation laid</h3>
+        <p>Aeris grew directly out of a completed High School Health Research Challenge paper on housing and respiratory health.</p>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-icon">✓</div>
+        <h3>Partner conversations underway</h3>
+        <p>The team has reached out to public health researchers at Drexel, Penn, and CHOP, and confirmed a meeting to discuss the kit with a CHOP/Penn researcher.</p>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-icon">✓</div>
+        <h3>Partner-facing pitch built</h3>
+        <p>A full presentation with a rotating speaker order across all three co-leads is written and rehearsed, ready for partner and funder meetings.</p>
+      </div>
+      <div class="impact-card impact-next reveal">
+        <div class="impact-icon">→</div>
+        <h3>Next: first kits out the door</h3>
+        <p>Turning partner conversations into an actual delivery pipeline for renters in the Philadelphia area.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Who's behind Aeris</span>
+      <h2>Three students, one shared research question.</h2>
+      <p>Aeris grew out of independent public health research into a hands-on project, now run day to day by its three co-leads.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="avatar">AS</div>
+        <h3>Aaron Sharma</h3>
+        <div class="role">Co-lead</div>
+        <p>Aspiring biomedical engineer and pre-med student. Leads outreach and partnerships with researchers and clinicians across Philadelphia.</p>
+        <ul class="team-tags">
+          <li>Student EMT, Good Fellowship EMS</li>
+          <li>FBLA &amp; TSA national-level competitor</li>
+        </ul>
+      </div>
+      <div class="team-card reveal">
+        <div class="avatar">TK</div>
+        <h3>Tejashwin Kodipaka</h3>
+        <div class="role">Co-lead, primary researcher</div>
+        <p>Aspiring healthcare professional. Started Aeris from a High School Health Research Challenge paper on Philadelphia's climate and respiratory health.</p>
+        <ul class="team-tags">
+          <li>PSBR 3rd place winner</li>
+          <li>HSHRC competitor</li>
+        </ul>
+      </div>
+      <div class="team-card reveal">
+        <div class="avatar">AC</div>
+        <h3>Advaith Chungapalli</h3>
+        <div class="role">Co-lead, social media</div>
+        <p>Aspiring biology major. Runs Aeris's social media and helps shape how the project communicates the science behind it.</p>
+        <ul class="team-tags">
+          <li>Aeris social media manager</li>
+          <li>Helped organize KADAVU cultural youth events</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="partners" id="partners">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Research partners</span>
+      <h2>Built with guidance from people who study this every day.</h2>
+      <p>Aeris has connected with public health researchers and clinicians across the Philadelphia area to ground the kit in real evidence.</p>
+    </div>
+    <div class="partner-row reveal">
+      <span class="partner-chip">Drexel University · Environmental &amp; Occupational Health</span>
+      <span class="partner-chip">University of Pennsylvania · PRCCEH</span>
+      <span class="partner-chip">Children's Hospital of Philadelphia</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="get-involved">
+  <div class="wrap">
+    <h2 class="reveal">Got a leak? Want to help stop the next one?</h2>
+    <p class="reveal">Whether you need a kit this week or want to bring Aeris to your clinic, school, or community org, reach out.</p>
+    <div class="hero-actions reveal">
+      <a class="btn btn-primary" href="mailto:hello@aerisinitiative.org">Request a kit</a>
+      <a class="btn btn-ghost" href="mailto:partners@aerisinitiative.org">Become a partner</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <svg viewBox="0 0 40 40" width="26" height="26" fill="none"><circle cx="20" cy="20" r="19" fill="#96BA71" stroke="#1B6647" stroke-width="2"/><circle cx="14" cy="16" r="4" fill="#3C8651"/><circle cx="24" cy="14" r="3" fill="#3C8651"/><circle cx="26" cy="24" r="4.5" fill="#3C8651"/><circle cx="15" cy="26" r="3" fill="#3C8651"/></svg>
+        AERIS
+      </div>
+      <div class="foot-links">
+        <a href="#problem">The problem</a>
+        <a href="#kit">The kit</a>
+        <a href="#team">Team</a>
+        <a href="#get-involved">Get involved</a>
+      </div>
+    </div>
+    <div>Aeris is a student-led public health initiative. Preventing mold. Protecting health.</div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // timeline fill animation, triggered once visible
+  const timelineWrap = document.querySelector('.timeline-wrap');
+  const fill = document.getElementById('tfill');
+  const runner = document.getElementById('trunner');
+  let played = false;
+  const tio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && !played){
+        played = true;
+        requestAnimationFrame(()=>{
+          fill.style.width = '100%';
+          runner.style.left = '100%';
+        });
+      }
+    });
+  }, {threshold:0.4});
+  if(timelineWrap) tio.observe(timelineWrap);
+
+  // mobile hamburger -> simple toggle of links as a stacked menu
+  const burger = document.querySelector('.hamburger');
+  const links = document.querySelector('nav.links');
+  burger.addEventListener('click', ()=>{
+    const open = links.style.display === 'flex';
+    links.style.display = open ? 'none' : 'flex';
+    links.style.position = 'absolute';
+    links.style.top = '64px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = 'var(--mist)';
+    links.style.flexDirection = 'column';
+    links.style.padding = '20px 28px';
+    links.style.borderBottom = '1px solid var(--line)';
+  });
+
+  // interactive mold growth / asthma risk simulator
+  (function(){
+    const pad = document.getElementById('simPad');
+    const cursorDot = document.getElementById('simCursor');
+    const spores = document.getElementById('simSpores');
+    const roHours = document.getElementById('roHours');
+    const roHumidity = document.getElementById('roHumidity');
+    const gaugeFill = document.getElementById('gaugeFill');
+    const roRisk = document.getElementById('roRisk');
+    if(!pad) return;
+
+    const NS = 'http://www.w3.org/2000/svg';
+
+    function update(px, py){
+      // px, py are 0..1 fractions across the pad
+      px = Math.min(1, Math.max(0, px));
+      py = Math.min(1, Math.max(0, py));
+      const hours = px * 72;
+      const humidity = 40 + (1 - py) * 60; // top = drier, bottom = more humid
+
+      cursorDot.style.left = (px*100) + '%';
+      cursorDot.style.top = (py*100) + '%';
+
+      const humidFactor = 0.55 + (humidity/100) * 0.9; // ~0.9 to ~1.45
+      const effectiveHours = hours * humidFactor;
+      let growth = effectiveHours / 48; // 1.0 == right at the 48h threshold
+      growth = Math.max(0, growth);
+
+      roHours.textContent = Math.round(hours) + 'h';
+      roHumidity.textContent = Math.round(humidity) + '%';
+
+      const gaugePct = Math.min(1, growth / 1.5) * 100;
+      gaugeFill.style.left = gaugePct + '%';
+
+      let riskLabel = 'Low';
+      if(growth >= 1.0) riskLabel = 'Severe';
+      else if(growth >= 0.7) riskLabel = 'High';
+      else if(growth >= 0.35) riskLabel = 'Moderate';
+      roRisk.textContent = 'Asthma-trigger risk: ' + riskLabel;
+
+      // render spore cluster growth as SVG circles
+      const count = Math.round(Math.min(1.4, growth) * 10);
+      let svg = '';
+      const cx = px*100, cy = py*100;
+      for(let i=0;i<count;i++){
+        const angle = (i / Math.max(1,count)) * Math.PI * 2 + i;
+        const dist = 3 + (i % 4) * 2.2;
+        const x = cx + Math.cos(angle) * dist;
+        const y = cy + Math.sin(angle) * dist;
+        const r = 1.6 + Math.min(1.4, growth) * 2.4;
+        const opacity = 0.35 + Math.min(1, growth) * 0.5;
+        const color = growth >= 1.0 ? '#A5271A' : (growth >= 0.7 ? '#D9552B' : (growth >= 0.35 ? '#E8A33D' : '#3C8651'));
+        svg += `<circle cx="${x}" cy="${y}" r="${r}" fill="${color}" opacity="${opacity.toFixed(2)}"/>`;
+      }
+      spores.innerHTML = svg;
+    }
+
+    function handlePointer(clientX, clientY){
+      const rect = pad.getBoundingClientRect();
+      const px = (clientX - rect.left) / rect.width;
+      const py = (clientY - rect.top) / rect.height;
+      update(px, py);
+    }
+
+    pad.addEventListener('mousemove', (e)=> handlePointer(e.clientX, e.clientY));
+    pad.addEventListener('touchmove', (e)=>{
+      if(e.touches && e.touches[0]){
+        handlePointer(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+      }
+    }, {passive:false});
+
+    // initial state: bottom-left, low risk
+    update(0, 1);
+  })();
+</script>
+
+</body>
+</html>
