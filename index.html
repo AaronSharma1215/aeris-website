@@ -319,6 +319,44 @@
   .cta p{max-width:44ch;margin:0 auto 36px;color:rgba(255,255,255,0.85);}
   .cta .hero-actions{justify-content:center;margin-bottom:0;}
 
+  .cta-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:28px;}
+  .cta-tab{
+    background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;
+    padding:10px 22px;border-radius:999px;font-weight:700;font-size:0.92rem;cursor:pointer;
+    transition:background .2s ease;
+  }
+  .cta-tab.active{background:var(--amber);color:#221200;border-color:transparent;}
+  .cta-form-wrap{max-width:520px;margin:0 auto;text-align:left;}
+  .cta-form{
+    background:var(--paper);border-radius:20px;padding:34px 32px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .cta-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .cta-form label{
+    display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:var(--green-ink);
+  }
+  .cta-form input[type="text"],
+  .cta-form input[type="email"],
+  .cta-form textarea{
+    font-family:var(--font-body);font-size:0.94rem;font-weight:400;color:var(--ink);
+    border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--mist);
+    resize:vertical;
+  }
+  .cta-form input:focus,.cta-form textarea:focus{outline:2px solid var(--green-primary);outline-offset:1px;}
+  .eligibility{
+    background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:18px 18px 6px;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .elig-title{font-family:var(--font-mono);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--green-deep);}
+  .elig-check{display:flex;align-items:flex-start;gap:10px;font-weight:400;font-size:0.88rem;color:var(--ink);}
+  .elig-check input{margin-top:3px;flex:none;width:16px;height:16px;accent-color:var(--green-primary);}
+  .form-submit{border:none;width:100%;justify-content:center;margin-top:6px;}
+  .cta-note{font-size:0.8rem;color:rgba(255,255,255,0.6);margin-top:20px;}
+
+  @media (max-width:520px){
+    .cta-form .form-row{grid-template-columns:1fr;}
+  }
+
   footer{background:var(--green-ink);color:rgba(255,255,255,0.7);padding:48px 0 30px;font-size:0.86rem;}
   .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:28px;margin-bottom:20px;}
   .foot-brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);color:#fff;font-size:1.05rem;}
@@ -366,7 +404,7 @@
       <a href="#impact">Impact</a>
       <a href="#team">Team</a>
     </nav>
-    <a class="nav-cta" href="#get-involved">Request a kit</a>
+    <a class="nav-cta" href="#get-involved" onclick="showCtaTab('kit')">Request a kit</a>
     <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -383,8 +421,8 @@
     <h1 class="headline">Mold takes root in <span class="accent">48 hours.</span> We move faster.</h1>
     <p class="sub">Aeris builds and delivers low-cost mold-prevention kits to renters, closing the short biological window between a water leak and a mold problem that won't go away.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#get-involved">Request a kit</a>
-      <a class="btn btn-ghost" href="#partners">Partner with us</a>
+      <a class="btn btn-primary" href="#get-involved" onclick="showCtaTab('kit')">Request a kit</a>
+      <a class="btn btn-ghost" href="#get-involved" onclick="showCtaTab('partner')">Partner with us</a>
     </div>
     <div class="hero-stats">
       <div><div class="num">48 hrs</div><div class="label">window before mold establishes</div></div>
@@ -697,11 +735,91 @@
 <section class="cta" id="get-involved">
   <div class="wrap">
     <h2 class="reveal">Got a leak? Want to help stop the next one?</h2>
-    <p class="reveal">Whether you need a kit this week or want to bring Aeris to your clinic, school, or community org, reach out.</p>
-    <div class="hero-actions reveal">
-      <a class="btn btn-primary" href="mailto:hello@aerisinitiative.org">Request a kit</a>
-      <a class="btn btn-ghost" href="mailto:partners@aerisinitiative.org">Become a partner</a>
+    <p class="reveal">Whether you need a kit this week or want to bring Aeris to your clinic, school, or community org, reach out below.</p>
+
+    <div class="cta-tabs reveal">
+      <button type="button" class="cta-tab active" id="tabKit" onclick="showCtaTab('kit')">Request a kit</button>
+      <button type="button" class="cta-tab" id="tabPartner" onclick="showCtaTab('partner')">Become a partner</button>
+      <button type="button" class="cta-tab" id="tabContact" onclick="showCtaTab('contact')">Contact us</button>
     </div>
+
+    <div class="cta-form-wrap reveal">
+      <form class="cta-form" id="kitForm" action="https://formsubmit.co/aerisinitiative@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New Aeris kit request">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <div class="form-row">
+          <label>Full name
+            <input type="text" name="Name" required>
+          </label>
+          <label>Email or phone
+            <input type="text" name="Contact" required>
+          </label>
+        </div>
+        <label>Neighborhood or ZIP code
+          <input type="text" name="Neighborhood" required>
+        </label>
+        <label>Tell us about the leak or moisture issue
+          <textarea name="Description" rows="3" required></textarea>
+        </label>
+
+        <div class="eligibility">
+          <div class="elig-title">Eligibility (check all three to request a kit)</div>
+          <label class="elig-check">
+            <input type="checkbox" name="Eligibility: Renter" value="Yes" required>
+            <span>I rent my home (not the property owner) and have lived here for at least 30 days.</span>
+          </label>
+          <label class="elig-check">
+            <input type="checkbox" name="Eligibility: Water exposure" value="Yes" required>
+            <span>I've had a leak, moisture problem, or visible mold risk in my home recently.</span>
+          </label>
+          <label class="elig-check">
+            <input type="checkbox" name="Eligibility: Income" value="Yes" required>
+            <span>My household income is at or below $100,000 per year.</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit">Send kit request</button>
+      </form>
+
+      <form class="cta-form" id="partnerForm" action="https://formsubmit.co/aerisinitiative@gmail.com" method="POST" style="display:none;">
+        <input type="hidden" name="_subject" value="New Aeris partner inquiry">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <div class="form-row">
+          <label>Name
+            <input type="text" name="Name" required>
+          </label>
+          <label>Organization
+            <input type="text" name="Organization">
+          </label>
+        </div>
+        <label>Email
+          <input type="email" name="Email" required>
+        </label>
+        <label>How would you like to work with Aeris?
+          <textarea name="Message" rows="3" required></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary form-submit">Send inquiry</button>
+      </form>
+
+      <form class="cta-form" id="contactForm" action="https://formsubmit.co/aerisinitiative@gmail.com" method="POST" style="display:none;">
+        <input type="hidden" name="_subject" value="New Aeris general contact">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <label>Name
+          <input type="text" name="Name" required>
+        </label>
+        <label>Email
+          <input type="email" name="Email" required>
+        </label>
+        <label>Message
+          <textarea name="Message" rows="3" required></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary form-submit">Send message</button>
+      </form>
+    </div>
+    <p class="cta-note reveal">Submissions go straight to the Aeris team.</p>
   </div>
 </section>
 
@@ -766,6 +884,24 @@
     links.style.padding = '20px 28px';
     links.style.borderBottom = '1px solid var(--line)';
   });
+
+  // toggle between kit-request, partner-inquiry, and contact forms
+  function showCtaTab(which){
+    const forms = {kit:'kitForm', partner:'partnerForm', contact:'contactForm'};
+    const tabs = {kit:'tabKit', partner:'tabPartner', contact:'tabContact'};
+    Object.keys(forms).forEach(key=>{
+      const formEl = document.getElementById(forms[key]);
+      const tabEl = document.getElementById(tabs[key]);
+      if(!formEl || !tabEl) return;
+      if(key === which){
+        formEl.style.display = 'flex';
+        tabEl.classList.add('active');
+      } else {
+        formEl.style.display = 'none';
+        tabEl.classList.remove('active');
+      }
+    });
+  }
 
   // interactive mold growth / asthma risk simulator
   (function(){
